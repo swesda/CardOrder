@@ -10,11 +10,10 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class WebTest {
+public class CardOrderTest {
 
     private static ChromeDriver driver;
     ChromeOptions chromeOptions = new ChromeOptions();
-
 
     @BeforeAll
     static void setUpAll() {
@@ -28,16 +27,16 @@ public class WebTest {
     }
 
     @AfterEach
-    void tearDown() {
+    void close() {
         driver.quit();
         driver = null;
     }
 
     @Test
-    void shouldSubmit() {
+    void shouldPresent() {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("Иван Иванов");
-        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79990009900");
+        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79000000000");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
         String text = driver.findElement(By.className("paragraph_theme_alfa-on-white")).getText();
@@ -45,10 +44,10 @@ public class WebTest {
     }
 
     @Test
-    void shouldSubmitWithDoubleName() {
+    void shouldPresentWithDoubleName() {
         driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[type='text']")).sendKeys("Анна-Мария");
-        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79990009900");
+        driver.findElement(By.cssSelector("[type='text']")).sendKeys("Мария-Луиза");
+        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79000000000");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
         String text = driver.findElement(By.className("paragraph_theme_alfa-on-white")).getText();
@@ -56,10 +55,10 @@ public class WebTest {
     }
 
     @Test
-    void shouldSubmitWhenNameIsEmpty() {
+    void shouldPresentWhenNameIsEmpty() {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("");
-        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79990009900");
+        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79000000000");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
         String text = driver.findElement(By.cssSelector("[data-test-id='name'] span.input__sub")).getText();
@@ -67,10 +66,10 @@ public class WebTest {
     }
 
     @Test
-    void shouldSubmitWhenNoValidName() {
+    void shouldPresentWhenNoValidName() {
         driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[type='text']")).sendKeys("John");
-        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79990009900");
+        driver.findElement(By.cssSelector("[type='text']")).sendKeys("Perry");
+        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79000000000");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
         String text = driver.findElement(By.cssSelector("[data-test-id='name'] span.input__sub")).getText();
@@ -78,9 +77,9 @@ public class WebTest {
     }
 
     @Test
-    void shouldSubmitWhenPhoneNumberIsEmpty() {
+    void shouldPresentWhenPhoneNumberIsEmpty() {
         driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[type='text']")).sendKeys("Антон");
+        driver.findElement(By.cssSelector("[type='text']")).sendKeys("Иван");
         driver.findElement(By.cssSelector("[type='tel']")).sendKeys("");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
@@ -89,10 +88,10 @@ public class WebTest {
     }
 
     @Test
-    void shouldSubmitWhenPhoneNumberNoValid() {
+    void shouldPresentWhenPhoneNumberNoValid() {
         driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[type='text']")).sendKeys("Антон");
-        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+7");
+        driver.findElement(By.cssSelector("[type='text']")).sendKeys("Иван");
+        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+790");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
         String text = driver.findElement(By.cssSelector("[data-test-id='phone'] span.input__sub")).getText();
@@ -100,13 +99,12 @@ public class WebTest {
     }
 
     @Test
-    void shouldSubmitWhenNotSelectedCheckbox() {
+    void shouldPresentWhenNotSelectedCheckbox() {
         driver.get("http://localhost:9999");
-        driver.findElement(By.cssSelector("[type='text']")).sendKeys("Антон");
-        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+7");
+        driver.findElement(By.cssSelector("[type='text']")).sendKeys("Иван");
+        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+790");
         driver.findElement(By.cssSelector("[type='button']")).click();
         String text = driver.findElement(By.cssSelector(".input_invalid")).getCssValue("color");
         assertEquals("rgba(255, 92, 92, 1)", text.trim());
     }
-
 }
