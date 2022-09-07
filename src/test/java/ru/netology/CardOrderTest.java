@@ -37,79 +37,85 @@ public class CardOrderTest {
         driver = null;
     }
 
-    @org.junit.Test
+    @Test
     void shouldPresent() {
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("Иван Иванов");
         driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79000000000");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
-        String text = driver.findElement(By.className("paragraph_theme_alfa-on-white")).getText();
-        assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
+        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
+
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldPresentWithDoubleName() {
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("Мария-Луиза");
         driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79000000000");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
-        String text = driver.findElement(By.className("paragraph_theme_alfa-on-white")).getText();
-        assertEquals("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.", text.trim());
+        String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
+        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
+
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldPresentWhenNameIsEmpty() {
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("");
         driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79000000000");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
-        String text = driver.findElement(By.cssSelector("[data-test-id='name'] span.input__sub")).getText();
-        assertEquals("Поле обязательно для заполнения", text.trim());
+        String expected = "Поле обязательно для заполнения";
+        String actual = driver.findElement(By.cssSelector("[data-test-id='name'] span.input__sub")).getText().trim();
+
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldPresentWhenNoValidName() {
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("Perry");
         driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79000000000");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
-        String text = driver.findElement(By.cssSelector("[data-test-id='name'] span.input__sub")).getText();
-        assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
+        String expected = "Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.";
+        String actual = driver.findElement(By.cssSelector("span.input_invalid[data-test-id='name'] .input__sub")).getText().trim();
+
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldPresentWhenPhoneNumberIsEmpty() {
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("Иван");
         driver.findElement(By.cssSelector("[type='tel']")).sendKeys("");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
-        String text = driver.findElement(By.cssSelector("[data-test-id='phone'] span.input__sub")).getText();
-        assertEquals("Поле обязательно для заполнения", text.trim());
+        String expected = "Поле обязательно для заполнения";
+        String actual = driver.findElement(By.cssSelector("span.input_invalid[data-test-id='phone'] .input__sub")).getText().trim();
+
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldPresentWhenPhoneNumberNoValid() {
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("Иван");
         driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+790");
         driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
         driver.findElement(By.cssSelector("[type='button']")).click();
-        String text = driver.findElement(By.cssSelector("[data-test-id='phone'] span.input__sub")).getText();
-        assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", text.trim());
+        String expected = "Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.";
+        String actual = driver.findElement(By.cssSelector("span.input_invalid[data-test-id='phone'] .input__sub")).getText().trim();
+
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldPresentWhenNotSelectedCheckbox() {
-        driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("Иван");
-        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+790");
+        driver.findElement(By.cssSelector("[type='tel']")).sendKeys("+79000000000");
         driver.findElement(By.cssSelector("[type='button']")).click();
-        String text = driver.findElement(By.cssSelector(".input_invalid")).getCssValue("color");
-        assertEquals("rgba(255, 92, 92, 1)", text.trim());
+        String actualText = driver.findElement(By.cssSelector("[data-test-id='agreement'].input_invalid")).getText();
+        String expected = "Я соглашаюсь с условиями обработки и использования моих персональных данных и разрешаю сделать запрос в бюро кредитных историй";
+        assertEquals(expected, actualText);
     }
 }
