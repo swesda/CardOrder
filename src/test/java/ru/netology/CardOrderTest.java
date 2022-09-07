@@ -1,5 +1,6 @@
-package ru.netology.test;
+package ru.netology;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,11 +9,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import io.github.bonigarcia.wdm.WebDriverManager;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 public class CardOrderTest {
-    WebDriver driver;
+    private WebDriver driver;
 
     @BeforeAll
     static void setUpAll() {
@@ -21,19 +23,21 @@ public class CardOrderTest {
 
     @BeforeEach
     void setUp() {
-        driver = WebDriverManager.chromedriver();
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--no-sandbox");
         options.addArguments("--headless");
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver();
+        driver.get("http://localhost:9999");
     }
 
     @AfterEach
-    void close() {
+    void tearDown() {
         driver.quit();
         driver = null;
     }
 
-    @Test
+    @org.junit.Test
     void shouldPresent() {
         driver.get("http://localhost:9999");
         driver.findElement(By.cssSelector("[type='text']")).sendKeys("Иван Иванов");
